@@ -1,6 +1,6 @@
 # Separating Anything from Image in Context (in submission)
 
- :heart_eyes: :heart_eyes: SeFM is a generalist foundation model, that can separate open-world arbitrary visual components from images with only a handy demonstration example:heart_eyes: :heart_eyes: 
+ :heart_eyes: :heart_eyes: SeFM is a novel generalist foundation model for separating anything from image with only a handy demonstration example, which exhibits groundbreaking generalization capability to open-world unseen visual components. :heart_eyes: :heart_eyes: 
 <table>
   <tr>
     <td> <img src = "figures/inference.png"> </td>
