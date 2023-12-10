@@ -35,7 +35,7 @@ pip install matplotlib scikit-image opencv-python timm einops ptflops PIL argpar
 ## Training
 
 ```
-python train.py 
+bash sefm_training.sh
 ```
 
 
