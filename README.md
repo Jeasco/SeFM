@@ -1,6 +1,6 @@
 # Separating Anything from Image in Context (in submission)
 
- :heart_eyes: :heart_eyes: Our proposed SeFM can separate open-world arbitrary visual components from image in context       :heart_eyes: :heart_eyes: 
+ :heart_eyes: :heart_eyes: SeFM is a generalist foundation model, that can separate open-world arbitrary visual components from images with only a handy demonstration example:heart_eyes: :heart_eyes: 
 <table>
   <tr>
     <td> <img src = "figures/inference.png"> </td>
