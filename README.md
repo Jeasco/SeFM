@@ -1,17 +1,21 @@
 # Separating Anything from Image in Context (in submission)
 
 ## :bulb: Highlight
- :heart_eyes: :heart_eyes: SeFM is a novel generalist foundation model for separating anything from image with only a handy demonstration example, which exhibits groundbreaking generalization capability to open-world unseen visual components. :heart_eyes: :heart_eyes: 
+ -:heart_eyes: :heart_eyes: SeFM is a novel generalist foundation model for separating anything from images.
+ -:heart_eyes: :heart_eyes: Only a handy demonstration example is required.
+ -:heart_eyes: :heart_eyes: Exhibiting groundbreaking generalization capability to open-world unseen visual components. 
 <table>
   <tr>
     <td> <img src = "figures/inference.png"> </td>
   </tr>
 </table>
 
+## :label: TODO 
+- [ ] Release inference code and demo.
+- [ ] Release checkpoints.
+- [ ] Release training codes.
 
-> **Abstract:***Separating undesired visual components (e.g. shadow and watermark) from images has long been a hot spot in the computer vision community. However, existing decomposition methods only perform well in separating in-domain known components while failing to generalize to unseen out-of-domain components. How to unifiedly separate open-world arbitrary visual components from images has remained unprobed. In this paper, we propose SeFM, a novel generalist foundation model for separating anything from image in context, which exhibits groundbreaking generalization capability to open-world unseen visual components. In particular, we advocate demarcating different visual components with semantics and tame a tailored in-context learning paradigm to cultivate the model to explicitly refer to the semantics of the separated visual components in the demonstration example to separate semantically identical visual components in the query image. Noteworthy, this learning paradigm enables the model master class-agnostic semantic matching capacity, i.e., discerning which visual components in the context are semantically identical to be separated, irrespective of the specific class of what those semantics represent. Thus, during inference, we can stitch a handy demonstration example as reference wherein visual components of the desired semantic are removed, SeFM can automatically separate semantically identical components in the query image even if the semantic is out-of-domain. Without bells and whistles, our SeFM can separate open-world arbitrary visual components in context and yield competitive performance compared to state-of-the-art task-specific models, on ten representative vision tasks ranging from low-level image decomposition to high-level potential applications. Furthermore, evaluations on few-shot learning and transfer learning spotlight unparalleled performance gains with pre-trained SeFM across diverse separation-related downstream tasks, signifying substantial potential in advancing foundation models within low-level visions.* 
-
-## Framework Architecture
+## :medal_military: Framework Architecture
 <table>
   <tr>
     <td> <img src = "figures/SeFM.png"> </td>
@@ -21,11 +25,6 @@
   </tr>
 </table>
 
-## :label: TODO 
-- [x] Release inference code and demo.
-- [x] Release checkpoints.
-- [x] Release training codes.
-- [ ] Add clean docs.
       
 ## :hammer_and_wrench: Installation
 `The model is built in PyTorch 1.8.0 and tested on Ubuntu 16.04 environment (Python3.7, CUDA9.0, cuDNN7.5).`
@@ -44,14 +43,14 @@ pip3 install -r requirements.txt
 python3 -m pip install -e .
 ```
 
-## Training
+### Training
 
 ```
 bash sefm_training.sh
 ```
 
 
-## Evaluation
+### Evaluation
 
 1. Download the pre-trained model and place it in `./checkpoints/`
 
