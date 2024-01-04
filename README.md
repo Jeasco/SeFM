@@ -1,5 +1,6 @@
 # Separating Anything from Image in Context (in submission)
 
+## :bulb: Highlight
  :heart_eyes: :heart_eyes: SeFM is a novel generalist foundation model for separating anything from image with only a handy demonstration example, which exhibits groundbreaking generalization capability to open-world unseen visual components. :heart_eyes: :heart_eyes: 
 <table>
   <tr>
@@ -20,16 +21,27 @@
   </tr>
 </table>
 
+## :label: TODO 
+- [x] Release inference code and demo.
+- [x] Release checkpoints.
+- [x] Release training codes.
+- [ ] Add clean docs.
+      
+## :hammer_and_wrench: Installation
+`The model is built in PyTorch 1.8.0 and tested on Ubuntu 16.04 environment (Python3.7, CUDA9.0, cuDNN7.5).`
 
-## `Installation`
-`The model is built in PyTorch 1.1.0 and tested on Ubuntu 16.04 environment (Python3.7, CUDA9.0, cuDNN7.5).`
+1. Clone the SeFM repository from GitHub:
 
-For installing, follow these intructions
+```bash
+git clone https://github.com/Jeasco/SeFM
+cd SeFM
 ```
-conda create -n pytorch1 python=3.7
-conda activate pytorch1
-conda install pytorch=1.1 torchvision=0.3 cudatoolkit=9.0 -c pytorch
-pip install matplotlib scikit-image opencv-python timm einops ptflops PIL argparse
+
+2. Install the required dependencies and SeFM:
+
+```bash
+pip3 install -r requirements.txt
+python3 -m pip install -e .
 ```
 
 ## Training
@@ -49,7 +61,7 @@ bash sefm_training.sh
 ```
 python in_context_inference_demo.py
 ```
-4. Visual results wii be saved in results
+4. Visual results will be saved in results
 
 
 
