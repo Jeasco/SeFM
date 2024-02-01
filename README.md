@@ -1,4 +1,9 @@
 # Separating Anything from Image in Context (in submission)
+<table>
+  <tr>
+    <td> <img src = "figures/logo.png"> </td>
+  </tr>
+</table>
 
 ## :bulb: Highlight
  - :heart_eyes: :heart_eyes: SeFM is a novel generalist foundation model for separating anything from images.
