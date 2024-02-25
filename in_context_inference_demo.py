@@ -2,6 +2,7 @@
 
 import sys
 import os
+import cv2
 import requests
 import argparse
 
@@ -15,11 +16,8 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 sys.path.append('.')
-import SeFM
+import model.sefm_model import SeFM
 
-
-imagenet_mean = np.array([0.485, 0.456, 0.406])
-imagenet_std = np.array([0.229, 0.224, 0.225])
 
 
 def get_args_parser():
@@ -39,31 +37,6 @@ def prepare_model(chkpt_dir):
     model.eval()
     return model
 
-
-def run_one_image(img, tgt, size, model, out_path, device):
-    x = torch.tensor(img)
-    x = x.unsqueeze(dim=0)
-    x = torch.einsum('nhwc->nchw', x)
-
-    tgt = torch.tensor(tgt)
-    tgt = tgt.unsqueeze(dim=0)
-    tgt = torch.einsum('nhwc->nchw', tgt)
-
-    bool_masked_pos = torch.zeros(model.patch_embed.num_patches)
-    bool_masked_pos[model.patch_embed.num_patches//2:] = 1
-    bool_masked_pos = bool_masked_pos.unsqueeze(dim=0)
-    valid = torch.ones_like(tgt)
-
-    loss, y, mask = model(x.float().to(device), tgt.float().to(device), bool_masked_pos.to(device), valid.float().to(device))
-    y = model.unpatchify(y)
-    y = torch.einsum('nchw->nhwc', y).detach().cpu()
-
-    output = y[0, y.shape[1]//2:, :, :]
-    output = torch.clip((output * imagenet_std + imagenet_mean) * 255, 0, 255)
-    output = F.interpolate(output[None, ...].permute(0, 3, 1, 2), size=[size[1], size[0]], mode='nearest').permute(0, 2, 3, 1)[0]
-    output = output.int()
-    output = Image.fromarray(output.numpy().astype(np.uint8))
-    output.save(out_path)
 
 
 if __name__ == '__main__':
@@ -87,38 +60,38 @@ if __name__ == '__main__':
     tgt2_path = "test/2.png"
     img_path = "test/3.png"
     img_name = os.path.basename(img_path)
-    out_path = "test/Painter.png"
+    out_path = "test/results.png"
 
-    res = 512
+    res = 256
 
-    img2 = Image.open(img2_path).convert("RGB")
-    img2 = img2.resize((res, res))
-    img2 = np.array(img2) / 255.
+    img2 = cv2.imread(img2_path)
+    img2 = cv2.resize(img2, (res, res))
 
-    tgt2 = Image.open(tgt2_path).convert("RGB")
-    tgt2 = tgt2.resize((res, res))
-    tgt2 = np.array(tgt2) / 255.
+    tgt2 = cv2.imread(tgt2_path)
+    tgt2 = cv2.resize(tgt2, (res, res))
 
-    img = Image.open(img_path).convert("RGB")
-    size = img.size
-    img = img.resize((res, res))
-    img = np.array(img) / 255.
-
-    tgt = tgt2  # tgt is not available
-    tgt = np.concatenate((tgt2, tgt), axis=0)
-
-    img = np.concatenate((img2, img), axis=0)
-    assert img.shape == (2*res, res, 3)
-    # normalize by ImageNet mean and std
-    img = img - imagenet_mean
-    img = img / imagenet_std
+    img = cv2.imread(img_path)
+    img = cv2.resize(img, (res, res))
 
 
-    assert tgt.shape == (2*res, res, 3)
-    # normalize by ImageNet mean and std
-    tgt = tgt - imagenet_mean
-    tgt = tgt / imagenet_std
+    tgt = img # we use query to init decoupled image for easy reconstruction
+
+    input = np.zeros((2 * res, 2 * res, 3))
+    input[:res, :res] = img2
+    input[:res, res:] = tgt2
+    input[res:, :res] = img
+    input[:res, :res] = tgt
 
     torch.manual_seed(2)
-    run_one_image(img, tgt, size, SeFM, out_path, device)
+
+    input = np.transpose(input, (2, 0, 1)).astype(np.float32) / 255.0
+    input = torch.tensor(input)
+    input = image.unsqueeze(0).cuda()
+
+    decoupled = SeFM(input)
+
+    decoupled = decoupled.cpu().data[0] * 255.
+    decoupled = np.clip(decoupled, 0, 255)
+    decoupled = np.ascontiguousarray(np.transpose(decoupled, (1, 2, 0)))
+    cv2.imwrite(out_path, decoupled)
 
